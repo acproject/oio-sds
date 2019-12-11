@@ -43,7 +43,7 @@ class WebhookFilter(Filter):
         except urllib3.exceptions.HTTPError as exc:
             oio_exception_from_httperror(exc)
 
-    def process(self, env, cb):
+    def process(self, env, beanstalk, cb):
         event = Event(env)
 
         url = env['url']
@@ -98,8 +98,8 @@ class WebhookFilter(Filter):
         except exceptions.OioException as exc:
             return EventError(
                 event=event,
-                body='webhook error: %s' % exc)(env, cb)
-        return self.app(env, cb)
+                body='webhook error: %s' % exc)(env, beanstalk, cb)
+        return self.app(env, beanstalk, cb)
 
 
 def extract_data_from_event(env):

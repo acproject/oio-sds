@@ -42,6 +42,7 @@ class Event(object):
     reqid = _event_env_property('request_id')
     url = _event_env_property('url')
     when = _event_env_property('when')
+    beanstalkd = _event_env_property('beanstalkd')
 
     def __init__(self, env):
         self.env = env
@@ -60,7 +61,7 @@ class Response(object):
             self.env = {}
         self.body = body
 
-    def __call__(self, env, cb):
+    def __call__(self, env, beanstalk, cb):
         if not self.event:
             self.event = Event(env)
         if not self.body:
@@ -92,6 +93,7 @@ class EventTypes(object):
     CONTENT_PERFECTIBLE = 'storage.content.perfectible'
     CONTENT_REBUILT = 'storage.content.rebuilt'
     META2_DELETED = 'storage.meta2.deleted'
+    XCUTE_TASKS = 'xcute.tasks'
 
 
 class StatusMap(object):
